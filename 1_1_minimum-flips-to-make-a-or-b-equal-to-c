@@ -1,0 +1,78 @@
+// https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/
+
+class Solution {
+public:
+    string f(int x)
+    {
+        if(x == 0)
+        {
+            return "0" ;
+        }
+
+        string ans = "" ;
+        while(x > 0)
+        {
+           if(x % 2 == 0)
+           {
+            ans += "0" ;
+           }
+           else
+           {
+            ans += "1" ;
+           }
+           x = x/2 ;
+        }
+        reverse(ans.begin() , ans.end()) ;
+        return ans ;
+    }
+
+    string padString(const string& s, int maxLength) {
+        string paddedString = s;
+        while (paddedString.size() < maxLength) 
+        {
+            paddedString = "0" + paddedString;
+        }
+        return paddedString;
+    }
+
+    int minFlips(int a, int b, int c) {
+        string first = f(a);
+        string second = f(b);
+        string third = f(c);
+
+        int mx = max({first.size(), second.size(), third.size()});
+
+        first = padString(first, mx);
+        second = padString(second, mx);
+        third = padString(third, mx);
+
+        
+        int flips = 0;
+        for (int i = 0; i < mx; ++i) {
+            char bitA = first[i];
+            char bitB = second[i];
+            char bitC = third[i];
+
+            //  counting flips
+            if (bitC == '0') 
+            {
+                if (bitA == '1') 
+                {
+                    flips++;
+                }
+                if (bitB == '1')
+                {
+                    flips++;
+                }
+            } 
+            else 
+            {  
+                // bitC== '1'
+                if (bitA == '0' && bitB == '0') 
+                flips++;
+            }
+        }
+
+        return flips;
+    }
+};
